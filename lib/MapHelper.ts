@@ -59,12 +59,12 @@ export default class MapHelper implements IPrintableMap {
    * @param listener listener class which receives an event after POI is filtered by moving a map.
    */
 
-  public parse (type: string, data: any, layer_setting: any, updated_search_key?:UpdatedSearchKey): [Array<any>, string] {
+  parse(type: string, data: any, updated_search_key?:UpdatedSearchKey): [Array<any>, string] {
     switch (type) {
       case "kml":
         var parser = new DOMParser();
         var dom = parser.parseFromString(data, 'text/xml');
-        return this.loadKMLData(dom, layer_setting, updated_search_key);
+        return this.loadKMLData(dom, updated_search_key);
         break;
       case "umal":
         this.loadUmapJsonData(data);
@@ -72,6 +72,9 @@ export default class MapHelper implements IPrintableMap {
       case "geojson":
         const json = JSON.parse(data);
         return this.loadGeoJSONData(json);
+        break;
+      case "xlsx":
+        return this.loadXLSJsonData(data);
         break;
     }
   }
@@ -104,6 +107,33 @@ export default class MapHelper implements IPrintableMap {
     });
   }
 
+  loadXLSJsonData(data: any ): [any, string] {
+    let updated_at = Date.now().toLocaleString();
+    let markers = [];
+    data.forEach((record) => {
+      // JSONデータからGeoJSONオブジェクトを生成するコードを挿入します。
+      // 緯度と経度の列があるかどうかを確認し、それに応じて座標を設定します
+      let latitude = record.hasOwnProperty('Latitude') ? record.Latitude : record.緯度;
+      let longitude = record.hasOwnProperty('Longitude') ? record.Longitude : record.経度;
+      let feature = {
+        type: "Feature",
+        properties: record,
+        geometry: {
+          type: "Point",
+          coordinates: [longitude, latitude]
+        }
+      };
+      let category = "未分類"
+      // カテゴリーが定義されていないエラーに対処するために、カテゴリーを定義します。
+      if (feature.properties && feature.properties["category"]) {
+        category = feature.properties["category"];
+      } else {
+        category = "未分類"; // カテゴリーが存在しない場合は、デフォルトのカテゴリーを使用します。
+      }
+      markers.push({feature, category});
+    });
+    return [markers, updated_at];
+  }
   loadGeoJSONData(data: any): [any, string] {
     let updated_at = Date.now().toLocaleString();
     let markers = [];
@@ -117,7 +147,7 @@ export default class MapHelper implements IPrintableMap {
     return [markers, updated_at];
   }
 
-  loadKMLData(data: Document, layer_setting:any, updated_search_key?:UpdatedSearchKey): [any, string] {
+  loadKMLData(data: Document, updated_search_key?:UpdatedSearchKey): [any, string] {
     let that = this;
     let folders: HTMLCollectionOf<Element> = data.getElementsByTagName('Folder');
     if (folders.length == 0) {
@@ -192,13 +222,13 @@ export default class MapHelper implements IPrintableMap {
     return this.serializeLatLng(bounds.getNorthWest()) + '-' +
         this.serializeLatLng(bounds.getSouthEast());
   }
-  public deserializeLatLng(s:string) {
+  deserializeLatLng(s:string) {
     let [slat, slng] = s.split(',', 2);
     let lng = parseFloat(slng);
     let lat = parseFloat(slat);
     return new MapLibre.LngLat(lng,lat);
   }
-  public deserializeBounds(s) {
+  deserializeBounds(s) {
     try{
       let _this = this;
       return new MapLibre.LngLatBounds(s.split('-', 2).map(function(d) {return _this.deserializeLatLng(d);}));

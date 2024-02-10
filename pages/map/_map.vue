@@ -1,40 +1,6 @@
 <template lang="pug">
 div.layout-map
-  div.layout-map-inner.grid-noGutter
-    aside.print-exclude.col-12_md-3_xl-6
-      .aside-inner
-        .aside-grid
-          .aside-item1
-            h2.aside-title-sp
-              nuxt-link(to='/')
-                img(src="~/assets/images/sp_logo.png" width="607" height="452" :alt='$t("common.title")')
-            h2.aside-title-pc
-              nuxt-link(to='/')
-                img(src="~/assets/images/logo.png" width="895" height="160" :alt='$t("common.title")')
-          .aside-item2
-            p
-              | {{$t('map.desc_1')}}
-          .aside-item3
-            div.aside-item-illust1
-              img(src="~/assets/images/illust_1.png" width="360" height="450" alt="")
-          .aside-item4
-            p
-              | {{$t('map.desc_2')}}
-              br
-              | {{$t('map.desc_3')}}
-          .aside-item5
-            p
-              | {{$t('map.desc_4')}}
-              br
-              | {{$t('map.desc_5')}}
-          .aside-item6
-            div.aside-item-illust2
-              img(src="~/assets/images/illust_2.png" width="640" height="435" alt="")
-          .aside-item7
-            p
-              | {{$t('map.desc_6')}}
-              br
-              | {{$t('map.desc_7')}}
+  div.layout-map-inner.grid-noGutter      
     main.main.col-12_md-9_xl-6
       .main-sheet
         header.header

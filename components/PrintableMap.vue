@@ -124,7 +124,8 @@ div
             ul.list-items.grid-noGutter
               li.col-12_xs-6(v-for="marker in group.markers")
                 span.item-number {{inBoundsMarkers.indexOf(marker) +1}}
-                span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
+                nuxt-link(:to="localePath('/detail/' + mapConfig.map_id + '?id=' + marker.feature.properties)")
+                  span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
           .list-section-none(
             v-if="isDisplayAllCategory && displayMarkersGroupByCategory.length === 0"
           )
@@ -209,7 +210,7 @@ export default {
           group = {
             category: current.category,
             prop: current.category,
-            markers: [],
+            markers: []
           };
           groups.push(group);
         }
@@ -229,7 +230,8 @@ export default {
   },
   mounted() {
     const MapHelper = require("~/lib/MapHelper.ts").default;
-    const ky = require("ky").default;
+    const DataLoader = require("~/lib/dataLoader.ts").default;
+    const dataloader = new DataLoader();
     helper = new MapHelper();
     const area = [];
     const categories = {};
@@ -241,13 +243,13 @@ export default {
         }
         self.checkedArea = area;
         self.updated_at = getNowYMD(new Date());
-        const data = await ky.get(source.url).text();
+        const data = await dataloader.load(source);
         const [markers, updated_at] = helper.parse(
           source.type,
           data,
-          self.mapConfig.layer_settings,
           source.updated_search_key
         );
+        console.log(markers);
         // eslint-disable-next-line array-callback-return
         markers.map((marker) => {
           categories[marker.category] = true;
@@ -330,6 +332,7 @@ export default {
       }
     },
     getMarkerNameText(markerProperties, locale) {
+      // console.log(markerProperties)
       let name = markerProperties.name;
       // eslint-disable-next-line no-prototype-builtins
       if (markerProperties.hasOwnProperty("name:" + locale)) {
