@@ -1,21 +1,33 @@
 {
-    // https://zenn.dev/shimiyu/scraps/80c150a0c68796
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "type": "chrome",
-        "request": "launch",
-        "name": "Nuxtjs: Launch Chrome",
-        "url": "http://localhost:3000",
-        "webRoot": "${workspaceFolder}"
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "client: chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "server: nuxt",
+      "args": ["dev"],
+      "osx": {
+        "program": "${workspaceFolder}/node_modules/.bin/nuxt"
+      },
+      "linux": {
+        "program": "${workspaceFolder}/node_modules/.bin/nuxt"
+      },
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/nuxt/bin/nuxt.js"
       }
-    ],
-    // これを追加
-    "compounds": [
-      {
-        "name": "fullstack: nuxt",
-        "configurations": ["Nuxtjs: Launch Chrome"]
-      }
-    ]
-  }
-  
+    }
+  ],
+  "compounds": [
+    {
+      "name": "fullstack: nuxt & chrome",
+      "configurations": ["client: chrome", "server: nuxt"]
+    }
+  ]
+}
