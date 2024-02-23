@@ -244,10 +244,13 @@ export default {
         self.checkedArea = area;
         self.updated_at = getNowYMD(new Date());
         const data = await dataloader.load(source);
+        console.log(source);
         const [markers, updated_at] = helper.parse(
           source.type,
           data,
-          source.updated_search_key
+          source.updated_search_key,
+          source.categoryColumn,
+          source.nameColumn,
         );
         console.log(markers);
         // eslint-disable-next-line array-callback-return

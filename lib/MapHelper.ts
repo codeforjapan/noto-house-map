@@ -59,7 +59,7 @@ export default class MapHelper implements IPrintableMap {
    * @param listener listener class which receives an event after POI is filtered by moving a map.
    */
 
-  parse(type: string, data: any, updated_search_key?:UpdatedSearchKey): [Array<any>, string] {
+  parse(type: string, data: any, updated_search_key?:UpdatedSearchKey, categoryColumn?:string, nameColumn?:string): [Array<any>, string] {
     switch (type) {
       case "kml": {
         const parser = new DOMParser();
@@ -75,7 +75,7 @@ export default class MapHelper implements IPrintableMap {
         return this.loadGeoJSONData(json);
       }
       case "xlsx": {
-        return this.loadXLSJsonData(data);
+        return this.loadXLSJsonData(data, categoryColumn, nameColumn);
       }
     }
   }
@@ -109,7 +109,7 @@ export default class MapHelper implements IPrintableMap {
     });
   }
 
-  loadXLSJsonData(data: any): [any, string] {
+  loadXLSJsonData(data: any, categoryColumn: string, nameColumn: string): [any, string] {
     const updated_at = Date.now().toLocaleString();
     const markers = [];
     data.forEach((record) => {
@@ -121,18 +121,19 @@ export default class MapHelper implements IPrintableMap {
       if (latitude === undefined || longitude === undefined) {
         return;
       }
+      record.name = record[nameColumn]
       const feature = {
         type: "Feature",
         properties: record,
         geometry: {
           type: "Point",
           coordinates: [longitude, latitude]
-        }
+        },
       };
       let category = "未分類"
       // カテゴリーが定義されていないエラーに対処するために、カテゴリーを定義します。
-      if (feature.properties && feature.properties.category) {
-        category = feature.properties.category;
+      if (feature.properties[categoryColumn]) {
+        category = feature.properties[categoryColumn];
       } else {
         category = "未分類"; // カテゴリーが存在しない場合は、デフォルトのカテゴリーを使用します。
       }

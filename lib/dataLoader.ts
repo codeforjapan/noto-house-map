@@ -5,6 +5,8 @@ interface SourceProp {
   type: string;
   title: string;
   show: boolean;
+  categoryColumn?: string;
+  nameColumn?: string;
 }
 
 export default class DataLoader {
