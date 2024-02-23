@@ -44,7 +44,7 @@ export interface Legend {
   iconClass: string;
 }
 
-export var DEFAULT_ICON_COLOR: string = "lightgreen";
+export const DEFAULT_ICON_COLOR: string = "lightgreen";
 /**
  * main class of PrintableMap
  */
@@ -61,21 +61,22 @@ export default class MapHelper implements IPrintableMap {
 
   parse(type: string, data: any, updated_search_key?:UpdatedSearchKey): [Array<any>, string] {
     switch (type) {
-      case "kml":
-        var parser = new DOMParser();
-        var dom = parser.parseFromString(data, 'text/xml');
+      case "kml": {
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(data, 'text/xml');
         return this.loadKMLData(dom, updated_search_key);
-        break;
-      case "umal":
+      }
+      case "umal": {
         this.loadUmapJsonData(data);
         break;
-      case "geojson":
+      }
+      case "geojson": {
         const json = JSON.parse(data);
         return this.loadGeoJSONData(json);
-        break;
-      case "xlsx":
+      }
+      case "xlsx": {
         return this.loadXLSJsonData(data);
-        break;
+      }
     }
   }
 
@@ -86,12 +87,11 @@ export default class MapHelper implements IPrintableMap {
    */
   addFeatureCollection(features: geoJson.FeatureCollection, category: Category): void {
     features.features.forEach((feature: geoJson.Feature) => {
-      if (feature.geometry.type == "Point") {
-        //this.addMarker(feature, category);
+      if (feature.geometry.type === "Point") {
+        // this.addMarker(feature, category);
       }
     });
   }
-
 
   /**
    * load Json String based on umap file
@@ -100,22 +100,28 @@ export default class MapHelper implements IPrintableMap {
   loadUmapJsonData(data: any): void {
     // let data = JSON.parse(jsonstring)
     data.layers.forEach((layer) => {
-      let category: Category = layer._umap_options;
+      /* implement this function if you want to use umap;
+      const category: Category = layer._umap_options;
       layer.features.forEach((feature) => {
         // this.addMarker(feature, category);
       });
+      */
     });
   }
 
-  loadXLSJsonData(data: any ): [any, string] {
-    let updated_at = Date.now().toLocaleString();
-    let markers = [];
+  loadXLSJsonData(data: any): [any, string] {
+    const updated_at = Date.now().toLocaleString();
+    const markers = [];
     data.forEach((record) => {
       // JSONデータからGeoJSONオブジェクトを生成するコードを挿入します。
       // 緯度と経度の列があるかどうかを確認し、それに応じて座標を設定します
-      let latitude = record.hasOwnProperty('Latitude') ? record.Latitude : record.緯度;
-      let longitude = record.hasOwnProperty('Longitude') ? record.Longitude : record.経度;
-      let feature = {
+      const latitude = Object.prototype.hasOwnProperty.call(record, 'Latitude') ? record.Latitude : Object.prototype.hasOwnProperty.call(record, '緯度') ? record.緯度 : undefined;
+      const longitude = Object.prototype.hasOwnProperty.call(record, 'Longitude') ? record.Longitude : Object.prototype.hasOwnProperty.call(record, '経度') ? record.経度 : undefined;
+      // if there is no latitude and longitude, skip this record
+      if (latitude === undefined || longitude === undefined) {
+        return;
+      }
+      const feature = {
         type: "Feature",
         properties: record,
         geometry: {
@@ -125,8 +131,8 @@ export default class MapHelper implements IPrintableMap {
       };
       let category = "未分類"
       // カテゴリーが定義されていないエラーに対処するために、カテゴリーを定義します。
-      if (feature.properties && feature.properties["category"]) {
-        category = feature.properties["category"];
+      if (feature.properties && feature.properties.category) {
+        category = feature.properties.category;
       } else {
         category = "未分類"; // カテゴリーが存在しない場合は、デフォルトのカテゴリーを使用します。
       }
@@ -134,13 +140,14 @@ export default class MapHelper implements IPrintableMap {
     });
     return [markers, updated_at];
   }
+
   loadGeoJSONData(data: any): [any, string] {
-    let updated_at = Date.now().toLocaleString();
-    let markers = [];
-    data["features"].forEach((feature) => {
+    const updated_at = Date.now().toLocaleString();
+    const markers = [];
+    data.features.forEach((feature) => {
       let category = "未分類"
-      if (feature.properties["category"]) {
-        category = feature.properties["category"];
+      if (feature.properties.category) {
+        category = feature.properties.category;
       }
       markers.push({feature, category});
     });
@@ -148,14 +155,13 @@ export default class MapHelper implements IPrintableMap {
   }
 
   loadKMLData(data: Document, updated_search_key?:UpdatedSearchKey): [any, string] {
-    let that = this;
-    let folders: HTMLCollectionOf<Element> = data.getElementsByTagName('Folder');
-    if (folders.length == 0) {
+    let folders: HTMLCollection = data.getElementsByTagName('Folder');
+    if (folders.length === 0) {
       folders = data.getElementsByTagName('Document');
     }
     let updated_at = "";
-    if (updated_search_key != undefined){
-      if (updated_search_key.type == "regexp"){
+    if (updated_search_key !== undefined){
+      if (updated_search_key.type === "regexp"){
         const targetElm = data.getElementsByTagName(updated_search_key.field);
         if (targetElm.length > 0){
           const text = targetElm[0].innerHTML;
@@ -167,24 +173,25 @@ export default class MapHelper implements IPrintableMap {
         }
       }
     }
-    let markers = [];
+    const markers = [];
     Array.prototype.forEach.call(folders, (folder) => {
-      let category = readCategoryOfFolder(folder, data);
+      const category = readCategoryOfFolder(folder, data);
 
-      if (tj.kml(folder).type == "FeatureCollection") {
-        let geojsondata: geoJson.FeatureCollection = tj.kml(folder, {styles: true});
+      if (tj.kml(folder).type === "FeatureCollection") {
+        const geojsondata: geoJson.FeatureCollection = tj.kml(folder, {styles: true});
         if (geojsondata.features.length > 0) {
-          //that.addFeatureCollection(geojsondata, category);
-          const result =  geojsondata.features.map((feature: geoJson.Feature) => {
-            if (feature.geometry.type == "Point") {
+          // that.addFeatureCollection(geojsondata, category);
+          const result = geojsondata.features.map((feature: geoJson.Feature) => {
+            if (feature.geometry.type === "Point") {
               feature.properties['marker-color'] = category.color;
               markers.push({feature, category: category.name});
             }
+            return feature;
           });
           return result;
         }
       } else {
-        let geojsondata: geoJson.Feature = tj.kml(folder, {styles: true});
+        const geojsondata: geoJson.Feature = tj.kml(folder, {styles: true});
         geojsondata.properties['marker-color'] = category.color;
         markers.push({geojsondata, category: category.name});
       }
@@ -193,18 +200,18 @@ export default class MapHelper implements IPrintableMap {
   }
 
   inBounds(point: any, bounds: MapLibre.LngLatBounds) {
-    var lng = (point[0] - bounds.getNorthEast().lng) * (point[0] - bounds.getSouthWest().lng) < 0;
-    var lat = (point[1] - bounds.getNorthEast().lat) * (point[1] - bounds.getSouthWest().lat) < 0;
+    const lng = (point[0] - bounds.getNorthEast().lng) * (point[0] - bounds.getSouthWest().lng) < 0;
+    const lat = (point[1] - bounds.getNorthEast().lat) * (point[1] - bounds.getSouthWest().lat) < 0;
     return lng && lat;
   }
 
   convertCategoryStyle(category: Category, layer_settings): Category {
-    if (layer_settings == undefined) {
+    if (layer_settings === undefined) {
       return category;
     }
     layer_settings.forEach((setting: MapPrint.LayerSetting) => {
       // if the category name is found, update with layer setting
-      if (setting.name == category.name) {
+      if (setting.name === category.name) {
         category.color = setting.color;
         category.bgColor = setting.bg_color;
         category.iconClass = setting.icon_class;
@@ -215,29 +222,32 @@ export default class MapHelper implements IPrintableMap {
     });
     return category;
   }
+
   serializeLatLng(latLng) {
     return '' + latLng.lat + ',' + latLng.lng;
   }
+
   serializeBounds(bounds) {
     return this.serializeLatLng(bounds.getNorthWest()) + '-' +
         this.serializeLatLng(bounds.getSouthEast());
   }
+
   deserializeLatLng(s:string) {
-    let [slat, slng] = s.split(',', 2);
-    let lng = parseFloat(slng);
-    let lat = parseFloat(slat);
-    return new MapLibre.LngLat(lng,lat);
+    const [slat, slng] = s.split(',', 2);
+    const lng = parseFloat(slng);
+    const lat = parseFloat(slat);
+    return new MapLibre.LngLat(lng, lat);
   }
+
   deserializeBounds(s) {
-    try{
-      let _this = this;
+    try {
+      const _this = this;
       return new MapLibre.LngLatBounds(s.split('-', 2).map(function(d) {return _this.deserializeLatLng(d);}));
-    }catch(e){
+    } catch (e){
       return undefined;
     }
   }
 }
-
 
 /**
  * return Category object
@@ -250,24 +260,24 @@ export function readCategoryOfFolder(folder:Element, document:Document):Category
   let color:string = "red";
   let iconUrl;
   try {
-    name = folder.getElementsByTagName("name")[0].textContent!;
-    let styleUrl:string = folder.getElementsByTagName("styleUrl")[0].textContent!;
+    name = folder.getElementsByTagName("name")[0].textContent || "";
+    const styleUrl:string = folder.getElementsByTagName("styleUrl")[0].textContent || "";
     if (styleUrl){
-      let styles:NodeListOf<Element> = document.querySelectorAll(styleUrl + " Pair")!;
+      const styles:NodeList = document.querySelectorAll(styleUrl + " Pair");
       if (styles.length > 0) {
-        Array.prototype.forEach.call( styles, (elem) => {
-          let key = elem.querySelector("key");
-          if (key && key.textContent == "normal"){
-            let styleUrl = elem.querySelector("styleUrl").textContent;
-            let style = document.querySelector(styleUrl);
-            try{
+        Array.prototype.forEach.call(styles, (elem) => {
+          const key = elem.querySelector("key");
+          if (key && key.textContent === "normal"){
+            const styleUrl = elem.querySelector("styleUrl").textContent;
+            const style = document.querySelector(styleUrl);
+            try {
               const c: String = style.querySelector("IconStyle color").textContent;
-              const a = parseInt('0x'+c.substring(0,2)) / 255
-              const b = parseInt('0x'+c.substring(2,4))
-              const g = parseInt('0x'+c.substring(4,6))
-              const r = parseInt('0x'+c.substring(6,8))
+              const a = parseInt('0x'+c.substring(0, 2)) / 255
+              const b = parseInt('0x'+c.substring(2, 4))
+              const g = parseInt('0x'+c.substring(4, 6))
+              const r = parseInt('0x'+c.substring(6, 8))
               color = `rgba(${r},${g},${b},${a})`
-            }catch(e){
+            } catch (e){
               color = DEFAULT_ICON_COLOR;
             }
             // iconUrl = style.querySelector("IconStyle Icon href").textContent;
@@ -275,12 +285,12 @@ export function readCategoryOfFolder(folder:Element, document:Document):Category
         });
       }
     }
-  }catch(e){
+  } catch (e){
     console.log("#category read error");
     console.log(e);
     console.log(folder);
   }
-  return {name:name, color:color, iconUrl: iconUrl};
+  return {name, color, iconUrl};
 
 }
 
