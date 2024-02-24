@@ -115,31 +115,35 @@ div
               span {{getMarkerCategoryText(mapConfig.layer_settings[group.category]?.name||group.category, $i18n.locale)}}
             ul.list-items
               li.list-item-header.grid-noGutter
-                .col-2
+                .col-1
                   .span No.
-                .col-4
+                .col-3
                   .span 物件名
+                .col-2
+                  .span 間取り
                 .col-2
                   .span 家賃
                 .col-2 
                   .span ペット
                 .col-2 
-                  .span 駐車場有無
+                  .span 駐車料
               li.list-item.grid-noGutter(
                   :class='{oddlist: index % 2 === 0}'
                   v-for="(marker, index) in group.markers"
                 )
-                .col-2
+                .col-1
                   span.item-number {{inBoundsMarkers.indexOf(marker) +1}}
-                .col-4
-                  nuxt-link(:to="localePath(`/detail/${marker.feature.properties['ID']}`)")
+                .col-3
+                  nuxt-link(:to="localePath(`/detail/${marker.feature.properties['管理番号']}`)")
                     span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
                 .col-2
-                  span.item-price {{marker.feature.properties['家賃']}}
+                  span.item-price {{marker.feature.properties['間取り']}}
+                .col-2
+                  span.item-price {{marker.feature.properties['家賃（円）']}}
                 .col-2 
-                  span.item-pet {{marker.feature.properties['ペット']}}
+                  span.item-pet {{marker.feature.properties['ペット 可否']}}
                 .col-2 
-                  span.item-parking {{ marker.feature.properties['駐車場有無'] }}
+                  span.item-parking {{ marker.feature.properties['駐車料'] }}
           .list-section-none(
             v-if="isDisplayAllCategory && displayMarkersGroupByCategory.length === 0"
           )

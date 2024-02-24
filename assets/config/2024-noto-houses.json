@@ -8,21 +8,21 @@
   "sources": [
     {
       "id": "properties",
-      "url": "http://localhost:3000/data/xls/noto.xlsx",
-      "link": "/data/xls/noto.xlsx",
+      "url": "http://localhost:3000/data/xls/noto2.xlsx",
+      "link": "/data/xls/noto2.xlsx",
       "type": "xlsx",
-      "title": "金沢区",
-      "categoryColumn": "間取り",
+      "title": "賃貸物件",
+      "categoryColumn": "住居タイプ",
       "nameColumn": "住宅名",
       "show": true
     }
   ],
-  "default_hash": "36.640550554827485,136.45494931375083-36.47708299117255,136.8523130059363",
-  "center": [136.65112108794244, 36.565528697178365],
+  "default_hash": "36.40516511069464,135.94428673603926-36.18692245699195,136.76177461288665",
+  "center": [136.3614086, 36.2912169],
   "type": "Excel",
   "layer_settings": {
-    "1K": {
-      "name": "1K",
+    "共同住宅": {
+      "name": "共同住宅",
       "name_en": "Floor Plan",
       "color": "#4f4f5a",
       "bg_color": "#B7B7BE",
