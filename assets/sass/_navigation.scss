@@ -19,7 +19,7 @@
   order: 1;
   @include bp(md) {
     order: -1;
-    flex: 0 0 65%;
+    flex: 0 0 90%;
     border-right: 1px solid $color-gray;
     padding-right: .5em;
     margin-right: .5em;

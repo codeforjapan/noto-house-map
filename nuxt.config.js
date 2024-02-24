@@ -105,8 +105,8 @@ export default {
       const list = require("./assets/config/list.json");
       const mapped = list.map((name) => {
         return [
-          "/map/" + name.replace(".json", ""),
-          "/en/map/" + name.replace(".json", ""),
+          "/detail/" + name.replace(".json", ""),
+          "/en/"
         ];
       });
       return [].concat(...mapped);

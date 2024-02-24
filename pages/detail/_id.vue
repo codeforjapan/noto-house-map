@@ -3,35 +3,8 @@ div.layout-map
   div.layout-map-inner      
     main.main.col-12_md-9_xl-6
       .main-sheet
-        header.header
-          .banner
-            .to-top
-              nuxt-link(to='/')
-                i.far.fa-arrow-alt-circle-left.fa-2x
-            .title-outer
-              h1.title(v-if="mapConfig && $i18n.locale === 'ja'")
-                | {{mapConfig.map_title}}
-              h1.title(v-else)
-                | {{mapConfig.map_title_en}}
-            .logo.print-exclude
-              nuxt-link(to='/')
-                img(src="~/assets/images/logo.png" width="895" height="160" :alt='$t("common.title")')
-            .sub-outer.print-exclude
-              .sub-button(@click='isOpenExplain=!isOpenExplain')
-                i.fas.fa-info-circle.fa-lg
-                span
-                  | {{$t('common.about')}}
-              .sub-button
-                i.fas.fa-language.fa-lg
-                select(onChange="location.href=value;")
-                  option.language(disabled selected)
-                    | Language: {{$i18n.locales.filter((i) => { return i.code === $i18n.locale })[0].name}}
-                  option(v-for="locale in $i18n.locales" :value="switchLocalePath(locale.code)")
-                    | {{ locale.name }}
-  
-          .qrcode
-            vue-qrcode(v-bind:value='fullURL' tag="img")
-        printable-map(:mapConfig='mapConfig', v-if="mapConfig", @bounds-changed="updateQRCode")
+        my-header(:mapConfig='mapConfig')
+        item-detail(:mapConfig='mapConfig', v-if="mapConfig")
         footer.footer
           .footer-logo
             img(src="~/assets/images/logo.png" width="895" height="160" :alt='$t("common.title")')
@@ -40,7 +13,8 @@ div.layout-map
 
 <script lang="js">
 import VueQrcode from '@chenfengyuan/vue-qrcode'
-import PrintableMap from '~/components/PrintableMap'
+import MyHeader from '~/components/MyHeader'
+import ItemDetail from '~/components/ItemDetail'
 import { getNowYMD } from '~/lib/displayHelper.ts'
 import Modal from '~/components/Modal'
 if (process.client) {
@@ -49,7 +23,7 @@ if (process.client) {
 
 export default {
   components: {
-    PrintableMap, VueQrcode, Modal
+    ItemDetail, VueQrcode, Modal, MyHeader
   },
   asyncData ({ app }) {
     const locale = app.i18n.locale
@@ -58,10 +32,10 @@ export default {
   },
   data () {
     return {
-      mapConfig: require('~/assets/config/' + (this.$nuxt.$route.params.map)),
+      mapConfig: require('~/assets/config/2024-noto-houses'),
+      itemid: this.$nuxt.$route.params.id,
       locale: null,
       isOpenExplain: false,
-      fullURL: null,
       updated_at: null
     }
   },
@@ -92,13 +66,7 @@ export default {
       ]
     }
   },
-  mounted () {
-    this.fullURL = location.href
-  },
   methods: {
-    updateQRCode () {
-      this.fullURL = location.href
-    },
     closeModalMethod () {
       this.isOpenExplain = false
     }

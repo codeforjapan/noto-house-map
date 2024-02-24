@@ -70,14 +70,6 @@ div
             .legend-navi-icon.active
               .legend-navi-button.print-button(@click="clickPrintButton()")
                 span.fa.fa-print(:alt='$t("PrintableMap.print")')
-          .navigation-area
-            .area-select-button(@click="isOpenAreaSelect=!isOpenAreaSelect")
-              .area-array-outer
-                i.fas.fa-check-square
-                .area-array
-                  | {{checkedArea.join(', ')}}
-              .area-select-button-icon.print-exclude
-                i.fas.fa-arrow-up
           .navigation-legend.legend-navi-inner.print-exclude
             .legend-navi-icon
               img(
@@ -140,7 +132,7 @@ div
                 .col-2
                   span.item-number {{inBoundsMarkers.indexOf(marker) +1}}
                 .col-4
-                  nuxt-link(:to="localePath('/detail/' + mapConfig.map_id + '?id=' + marker.feature.properties)")
+                  nuxt-link(:to="localePath(`/detail/${marker.feature.properties['ID']}`)")
                     span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
                 .col-2
                   span.item-price {{marker.feature.properties['家賃']}}
