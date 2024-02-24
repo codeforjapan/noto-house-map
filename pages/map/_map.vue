@@ -1,6 +1,6 @@
 <template lang="pug">
 div.layout-map
-  div.layout-map-inner.grid-noGutter      
+  div.layout-map-inner      
     main.main.col-12_md-9_xl-6
       .main-sheet
         header.header
