@@ -4,7 +4,7 @@ div.layout-map
     main.main.col-12_md-9_xl-6
       .main-sheet
         my-header(:mapConfig='mapConfig')
-        item-detail(:mapConfig='mapConfig', v-if="mapConfig")
+        item-detail(:mapConfig='mapConfig', :itemId='itemid' v-if="mapConfig")
         footer.footer
           .footer-logo
             img(src="~/assets/images/logo.png" width="895" height="160" :alt='$t("common.title")')

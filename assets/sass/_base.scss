@@ -66,3 +66,13 @@ article {
 button, input, optgroup, select, textarea {
   font-family: $font-family-sans-serif;
 }
+.withBorder {
+  [class^="col"], [class*=" col-"] {
+    border: 1px solid #eaeaea; 
+  }
+}
+.col{
+  .title {
+    background-color: #f5f5f5; 
+  }
+}
