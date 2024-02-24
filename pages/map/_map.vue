@@ -4,10 +4,15 @@ div.layout-map
     main.main.col-12_md-9_xl-6
       .main-sheet
         header.header
-          .to-top
-            nuxt-link(to='/')
-              i.far.fa-arrow-alt-circle-left.fa-2x
           .banner
+            .to-top
+              nuxt-link(to='/')
+                i.far.fa-arrow-alt-circle-left.fa-2x
+            .title-outer
+              h1.title(v-if="mapConfig && $i18n.locale === 'ja'")
+                | {{mapConfig.map_title}}
+              h1.title(v-else)
+                | {{mapConfig.map_title_en}}
             .logo.print-exclude
               nuxt-link(to='/')
                 img(src="~/assets/images/logo.png" width="895" height="160" :alt='$t("common.title")')
@@ -16,9 +21,6 @@ div.layout-map
                 i.fas.fa-info-circle.fa-lg
                 span
                   | {{$t('common.about')}}
-              .sub-button.github-link
-                i.fab.fa-github.fa-lg
-                a(href="https://github.com/codeforjapan/mapprint") {{ $t('common.contribute') }}
               .sub-button
                 i.fas.fa-language.fa-lg
                 select(onChange="location.href=value;")
@@ -26,13 +28,7 @@ div.layout-map
                     | Language: {{$i18n.locales.filter((i) => { return i.code === $i18n.locale })[0].name}}
                   option(v-for="locale in $i18n.locales" :value="switchLocalePath(locale.code)")
                     | {{ locale.name }}
-            .title-outer
-              h1.title(v-if="mapConfig && $i18n.locale === 'ja'")
-                | {{mapConfig.map_title}}
-              h1.title(v-else)
-                | {{mapConfig.map_title_en}}
-              .datetime
-                | {{$t('map.printed_at')}} {{updated_at}}
+  
           .qrcode
             vue-qrcode(v-bind:value='fullURL' tag="img")
         printable-map(:mapConfig='mapConfig', v-if="mapConfig", @bounds-changed="updateQRCode")

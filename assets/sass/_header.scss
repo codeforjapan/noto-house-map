@@ -1,13 +1,9 @@
 .header {
-  position: absolute;
   z-index: z(header);
   background-color: #fff;
   padding: 0 1em;
   @include bp(md) {
-    display: flex;
     align-items: center;
-    position: fixed;
-    bottom: 0;
     left: 0;
     right: 0;
     background-color: $color-alpha-black;
@@ -50,7 +46,7 @@
   .title-outer {
     order: 1;
     @include bp(md) {
-      order: -1;
+      order: 0;
     }
   }
   .title {
