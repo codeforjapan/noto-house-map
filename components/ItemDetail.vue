@@ -48,6 +48,7 @@
   .text 緯度	経度
 </template>
 <script lang="js">
+import { detectScreenSize } from '~/lib/screenSize.ts';
 export default {
   props: {
     mapConfig: {
@@ -63,7 +64,14 @@ export default {
     return {
       itemid: this.$props.itemId,
       item: null,
-      updated_at: null
+      updated_at: null,
+      screenSize: 'xs'
+    }
+  },
+  computed: {
+    gridOrCol() {
+      // 'xs' サイズの場合は 'col-12' のみを返し、それ以上のサイズではグリッドクラスを追加
+      return this.screenSize === 'xs' || this.screenSize === 'sm' ? ['grid'] : ['col'];
     }
   },
   created () {
@@ -80,6 +88,18 @@ export default {
     loadDataAsync().catch((error) => {
       console.error(error);
     })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  mounted() {
+    this.updateScreenSize();
+    window.addEventListener('resize', this.updateScreenSize);
+  },
+  methods: {
+    updateScreenSize() {
+      this.screenSize = detectScreenSize(window.innerWidth);
+    }
   }
 }
 </script>
