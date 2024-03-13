@@ -5,7 +5,7 @@
     span(v-if="item['階数']") {{ item['階数'] }} 階
     span(v-if="item['部屋番号']") , 部屋番号：{{ item['部屋番号'] }}
   .grid_Gutter
-    .col
+    .detail(v-bind:class="ColOrNull")
       .col
         h2 家賃 {{item['家賃（円）']}} 円
         .prices 共益費 {{item['共益費（円）']}} 円/ 管理費 {{item['管理費（円）']}}円
@@ -33,7 +33,9 @@
         .col.grid
           .col-2.title 備考
           .col {{ item['備考（その他情報）'] }}
-    .col-3.company
+      .col
+        simple-map(:lat="item['緯度']" :lng="item['経度']")
+    .company(v-bind:class="Col3OrNull")
       .col
         h3.title 団体名
         p {{ item['団体名'] }}
@@ -45,11 +47,15 @@
         p {{ item['問い合わせ先（半角・ハイフンあり）'] }}
       .col
         p 最終更新日時 {{ item['更新日時（yyyymmdd）'] }}
-  .text 緯度	経度
+
 </template>
 <script lang="js">
+import SimpleMap from '~/components/SimpleMap.vue'
 import { detectScreenSize } from '~/lib/screenSize.ts';
 export default {
+  components: {
+    SimpleMap
+  },
   props: {
     mapConfig: {
       type: Object,
@@ -69,9 +75,13 @@ export default {
     }
   },
   computed: {
-    gridOrCol() {
+    ColOrNull() {
       // 'xs' サイズの場合は 'col-12' のみを返し、それ以上のサイズではグリッドクラスを追加
-      return this.screenSize === 'xs' || this.screenSize === 'sm' ? ['grid'] : ['col'];
+      return this.screenSize === 'xs' || this.screenSize === 'sm' ? [''] : ['col'];
+    },
+    Col3OrNull() {
+      // 'xs' サイズの場合は 'col-12' のみを返し、それ以上のサイズではグリッドクラスを追加
+      return this.screenSize === 'xs' || this.screenSize === 'sm' ? [''] : ['col3'];
     }
   },
   created () {

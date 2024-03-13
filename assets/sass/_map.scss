@@ -16,6 +16,17 @@
     z-index: z(mapboxgl-popup);
   }
 }
+.simple-map-outer {
+  padding: 10px 0;
+  justify-content: center;
+}
+#simple-map {
+  width: 100%;
+  height: 40vh;
+  @include bp(md) {
+    height: 100mm;
+  }
+}
 
 .marker {
   span {
