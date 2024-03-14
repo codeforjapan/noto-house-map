@@ -3,7 +3,7 @@ div.layout-map
   div.layout-map-inner      
     main.main.col-12_md-9_xl-6
       .main-sheet
-        my-header(:mapConfig='mapConfig')
+        my-header(:mapConfig='mapConfig', showToTop=true)
         item-detail(:mapConfig='mapConfig', :itemId='itemid' v-if="mapConfig")
         footer.footer
           .footer-logo

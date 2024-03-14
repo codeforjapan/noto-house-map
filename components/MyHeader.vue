@@ -1,5 +1,8 @@
 <template lang="pug">
 header.header
+  .to-top(v-if="showToTop")
+    nuxt-link(to="/")
+      i.far.fa-arrow-alt-circle-left.fa-2x
   .banner
     .title-outer
       h1.title(v-if="mapConfig && $i18n.locale === 'ja'")
@@ -34,6 +37,10 @@ export default {
     mapConfig: {
       type: Object,
       required: true,
+    },
+    showToTop: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

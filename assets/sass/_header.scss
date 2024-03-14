@@ -3,6 +3,7 @@
   background-color: #fff;
   padding: 0 1em;
   @include bp(md) {
+    display: flex;
     align-items: center;
     left: 0;
     right: 0;
