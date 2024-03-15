@@ -28,7 +28,7 @@ export default {
       {
         hid: "og:image",
         property: "og:image",
-        content: "https://kamimap.com/images/ogp_main.png",
+        content: "https://noto.kamimap.com/images/ogp_main.png",
       },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -45,7 +45,7 @@ export default {
       },
     ],
     script: [
-      { src: "https://www.googletagmanager.com/gtag/js?id=UA-45275834-9" },
+      { src: "https://www.googletagmanager.com/gtag/js?id=GTM-5DHQJ5VX" },
       { src: "/ga.js" },
     ],
   },
