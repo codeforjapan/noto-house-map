@@ -37,12 +37,18 @@ div
                   )
                   span.popup-poi-type
                     | {{getMarkerCategoryText(mapConfig.layer_settings[marker.category]?.name||marker.category, $i18n.locale)}}
-                p
-                  | {{$i18n.t("PrintableMap.name")}} {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
+                p.popup-detail
+                  nuxt-link(:to="localePath(`/detail/${marker.feature.properties['管理番号']}`)")
+                    | {{$i18n.t("PrintableMap.name")}} {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
                 div.popup-detail-content
-                  p(
-                    v-html="marker.feature.properties.description ? marker.feature.properties.description : ''"
-                  )
+                  .item
+                    | 間取り： {{marker.feature.properties['間取り']}}
+                  .item
+                    | 家賃： {{marker.feature.properties['家賃（円）']}}
+                  .item
+                    | ペット {{marker.feature.properties['ペット 可否']}}
+                  .item
+                    | 駐車料： {{ marker.feature.properties['駐車料'] }}
       .legend-navi
         .area-select(:class='{open: isOpenAreaSelect}')
           .area-close(@click="isOpenAreaSelect=false")
