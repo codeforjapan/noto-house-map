@@ -8,8 +8,8 @@
   "sources": [
     {
       "id": "properties",
-      "url": "https://noto.kamimap.com/data/xls/noto2.xlsx",
-      "link": "/data/xls/noto2.xlsx",
+      "url": "http://localhost:3000/data/xls/noto3.xlsx",
+      "link": "/data/xls/noto3.xlsx",
       "type": "xlsx",
       "title": "賃貸物件",
       "categoryColumn": "住居タイプ",
@@ -26,8 +26,16 @@
       "name_en": "Floor Plan",
       "color": "#4f4f5a",
       "bg_color": "#B7B7BE",
-      "icon_class": "fa-solid fa-map-pin",
+      "icon_class": "fa-solid fa-warehouse",
       "class": "layer_gs_ok"
+    },
+    "一戸建て": {
+      "name": "一戸建て",
+      "name_en": "House",
+      "color": "#4f4f5a",
+      "bg_color": "#e7a9BE",
+      "icon_class": "fa-solid fa-house",
+      "class": "layer_house"
     },
     "2DK": {
       "name": "1K",

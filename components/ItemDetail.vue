@@ -92,7 +92,7 @@ export default {
       const source = this.mapConfig.sources[0];
       const data = await dataloader.load(source);
       console.log(data);
-      self.item = data.find((item) => item['管理番号'] === parseInt(self.itemid));
+      self.item = data.find((item) => item['管理番号'] === self.itemid);
       console.log(self.item)
     };
     loadDataAsync().catch((error) => {
