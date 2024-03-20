@@ -138,18 +138,18 @@ div
                   v-for="(marker, index) in group.markers"
                 )
                 .col-1
-                  span.item-number {{inBoundsMarkers.indexOf(marker) +1}}
+                  span.item-number {{findNumbersOfMarker(inBoundsMarkers, marker)}}
                 .col-3
                   nuxt-link(:to="localePath(`/detail/${marker.feature.properties['管理番号']}`)")
                     span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
                 .col-2
-                  span.item-price {{marker.feature.properties['間取り']}}
+                  span.item-price {{marker.room['間取り']}}
                 .col-2
-                  span.item-price {{marker.feature.properties['家賃（円）']}}
+                  span.item-price {{marker.room['家賃']}}
                 .col-2 
-                  span.item-pet {{marker.feature.properties['ペット 可否']}}
+                  span.item-pet {{marker.room['ペット 可否']}}
                 .col-2 
-                  span.item-parking {{ marker.feature.properties['駐車料'] }}
+                  span.item-parking {{ marker.room['駐車料'] }}
           .list-section-none(
             v-if="isDisplayAllCategory && displayMarkersGroupByCategory.length === 0"
           )
@@ -229,17 +229,24 @@ export default {
     },
     displayMarkersGroupByCategory() {
       const resultGroupBy = this.inBoundsMarkers.reduce((groups, current) => {
-        let group = groups.find((g) => g.category === current.category);
-        if (!group) {
-          group = {
-            category: current.category,
-            prop: current.category,
-            markers: []
-          };
-          groups.push(group);
-        }
-        group.markers.push(current);
-        return groups;
+        const rooms = current.feature.properties.rooms.map(room => ({
+          category: current.category,
+          feature: current.feature,
+          room
+        }))
+        rooms.forEach((room) => {
+          let group = groups.find((g) => g.category === room.category);
+          if (!group) {
+            group = {
+              category: room.category,
+              prop: room.category,
+              markers: []
+            };
+            groups.push(group);
+          }
+          group.markers.push(room);
+        })
+        return groups;        
       }, []);
       return resultGroupBy;
     },
@@ -254,6 +261,7 @@ export default {
   },
   mounted() {
     const MapHelper = require("~/lib/MapHelper.ts").default;
+    const groupByCoordinates = require("~/lib/MapHelper.ts").groupByCoordinates;
     const DataLoader = require("~/lib/dataLoader.ts").default;
     const dataloader = new DataLoader();
     helper = new MapHelper();
@@ -305,7 +313,7 @@ export default {
         });
         self.layers.push({
           source,
-          markers,
+          markers: groupByCoordinates(markers)
         });
       })();
     });
@@ -366,6 +374,16 @@ export default {
         name = markerProperties["name:" + locale];
       }
       return name;
+    },
+    findNumbersOfMarker(inBoundsMarkers, marker) {
+      for (let i = 0; i < inBoundsMarkers.length; i++) {
+        const _marker = inBoundsMarkers[i];
+        if (_marker.feature.geometry.coordinates[0] === marker.feature.geometry.coordinates[0] &&
+          _marker.feature.geometry.coordinates[1] === marker.feature.geometry.coordinates[1]) {
+          return i + 1; // Arrays are 0-indexed; add 1 to match human-readable numbering
+        }
+      }
+      return 0; // Return 0 if not found, though this case should ideally never occur
     },
   },
 };

@@ -295,3 +295,46 @@ export function readCategoryOfFolder(folder:Element, document:Document):Category
 
 }
 
+/**
+ * group by markers by coordinates
+ * @param data 
+ * @returns 
+ */
+export function groupByCoordinates(data: any): any {
+  const grouped = {};
+
+  data.forEach((item) => {
+    const coordinates = item.feature.geometry.coordinates.join(','); // Use coordinates as a string key
+    const roomProperties = { 
+      "階数": item.feature.properties["階数"],
+      "部屋番号": item.feature.properties["部屋番号"],
+      "家賃": item.feature.properties["家賃（円）"],
+      "間取り": item.feature.properties["間取り"],
+      "ペット 可否": item.feature.properties["ペット 可否"],
+      "駐車料": item.feature.properties["駐車料（円）"]
+    };
+
+    if (!grouped[coordinates]) {
+      // Deep copy item to avoid mutating the original data
+      const newItem = JSON.parse(JSON.stringify(item));
+
+      // Initialize rooms with the current room number
+      newItem.feature.properties.rooms = [roomProperties];
+
+      // Remove the now unnecessary "部屋番号" property
+      delete newItem.feature.properties["階数"];
+      delete newItem.feature.properties["部屋番号"];
+      delete newItem.feature.properties["家賃（円）"];
+      delete newItem.feature.properties["間取り"];
+      delete newItem.feature.properties["ペット 可否"];
+      delete newItem.feature.properties["駐車料（円）"];
+
+      grouped[coordinates] = newItem;
+    } else {
+      // Just push the new room number into the existing entry
+      grouped[coordinates].feature.properties.rooms.push(roomProperties);
+    }
+  });
+
+  return Object.values(grouped);
+};
