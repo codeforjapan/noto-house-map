@@ -28,7 +28,7 @@
           .col {{ item['ペット 可否'] }}
         .col.grid
           .col.title 駐車料
-          .col {{ item['駐車料'] }}円
+          .col {{ item['駐車料（円）'] }}円
       .col.grid_noGutter.withBorder
         .col.grid
           .col-2.title 備考
