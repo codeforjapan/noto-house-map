@@ -282,7 +282,6 @@ export default {
         self.checkedArea = area;
         self.updated_at = getNowYMD(new Date());
         const data = await dataloader.load(source);
-        console.log(source);
         const [markers, updated_at] = helper.parse(
           source.type,
           data,
@@ -290,7 +289,6 @@ export default {
           source.categoryColumn,
           source.nameColumn,
         );
-        console.log(markers);
         // eslint-disable-next-line array-callback-return
         markers.map((marker) => {
           categories[marker.category] = true;
