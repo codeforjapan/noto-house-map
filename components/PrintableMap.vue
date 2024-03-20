@@ -78,10 +78,6 @@ div
                     target='blank'
                   ) [{{$t("PrintableMap.back_to_map")}}]
         .navigation
-          .navigation-area.print-exclude
-            .legend-navi-icon.active
-              .legend-navi-button.print-button(@click="clickPrintButton()")
-                span.fa.fa-print(:alt='$t("PrintableMap.print")')
           .navigation-legend.legend-navi-inner.print-exclude
             .legend-navi-icon
               img(
