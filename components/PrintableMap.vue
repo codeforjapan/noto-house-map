@@ -29,7 +29,7 @@ div
                     :style="{background:mapConfig.layer_settings[marker.category]?.bg_color}"
                   ) {{index + 1}}
             MglPopup
-              div
+              div.popup-window
                 div.popup-type
                   i(
                     :class="[mapConfig.layer_settings[marker.category]?.icon_class, mapConfig.layer_settings[marker.category]?.class]"
@@ -38,17 +38,23 @@ div
                   span.popup-poi-type
                     | {{getMarkerCategoryText(mapConfig.layer_settings[marker.category]?.name||marker.category, $i18n.locale)}}
                 p.popup-detail
-                  nuxt-link(:to="localePath(`/detail/${marker.feature.properties['管理番号']}`)")
-                    | {{$i18n.t("PrintableMap.name")}} {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
-                div.popup-detail-content
-                  .item
-                    | 間取り： {{marker.feature.properties['間取り']}}
-                  .item
-                    | 家賃： {{marker.feature.properties['家賃（円）']}}
-                  .item
-                    | ペット {{marker.feature.properties['ペット 可否']}}
-                  .item
-                    | 駐車料： {{ marker.feature.properties['駐車料'] }}
+                  | {{$i18n.t("PrintableMap.name")}} 
+                  span(v-if='marker.feature.properties.rooms.length > 1' )
+                    | {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
+                  span(v-else)
+                    nuxt-link(:to="localePath(`/detail/${marker.feature.properties.rooms[0]['管理番号']}`)")
+                      | {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
+                .list-item.grid-noGutter(
+                  v-for="(room) in marker.feature.properties.rooms"
+                )
+                  .col-4
+                    nuxt-link(:to="localePath(`/detail/${room['管理番号']}`)")
+                      span.item-name {{ room['部屋番号'] === "-" ? "詳細" : room['部屋番号'] }}
+                  .col-4
+                    span.item-price {{room['間取り']}}
+                  .col-4
+                    span.item-price {{room['家賃']}}
+
       .legend-navi
         .area-select(:class='{open: isOpenAreaSelect}')
           .area-close(@click="isOpenAreaSelect=false")
@@ -141,7 +147,7 @@ div
                   span.item-number {{findNumbersOfMarker(inBoundsMarkers, marker)}}
                 .col-3
                   nuxt-link(:to="localePath(`/detail/${marker.room['管理番号']}`)")
-                    span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
+                    span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}} {{ marker.room['部屋番号'] }}
                 .col-2
                   span.item-price {{marker.room['間取り']}}
                 .col-2

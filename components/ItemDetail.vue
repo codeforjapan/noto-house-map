@@ -42,9 +42,16 @@
       .col
         h3.title 取扱業者
         p {{ item['取扱い業者名'] }}
-      .col
-        h3.title 問い合わせ先
-        p {{ item['問い合わせ先（半角・ハイフンあり）'] }}
+        .col
+        h3.title 問い合わせ先1
+        p 
+          a(:href="tel1(item)")
+            | {{ item["問い合わせ先1（半角・ハイフンあり）"] }}
+        .col(v-if='item["問い合わせ先2（半角・ハイフンあり）"]')
+          h3.title 問い合わせ先2
+          p 
+            a(:href="tel2(item)")
+              | {{ item['問い合わせ先2（半角・ハイフンあり）'] }}
       .col
         p 最終更新日時 {{ item['更新日時（yyyymmdd）'] }}
 
@@ -109,6 +116,12 @@ export default {
   methods: {
     updateScreenSize() {
       this.screenSize = detectScreenSize(window.innerWidth);
+    },
+    tel1(item) {
+      return `tel:${item["問い合わせ先1（半角・ハイフンあり）"]}`
+    },
+    tel2(item) {
+      return `tel:${item["問い合わせ先2（半角・ハイフンあり）"]}`
     }
   }
 }

@@ -12,8 +12,11 @@
     height: 140mm;
   }
   .mapboxgl-popup {
-    max-width: 200px;
+    max-width: 240px;
     z-index: z(mapboxgl-popup);
+  }
+  .popup-window {
+    width: 240px;
   }
 }
 .simple-map-outer {
