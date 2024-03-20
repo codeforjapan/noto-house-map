@@ -3,8 +3,7 @@
   flex-direction: row;
   align-items: center;
   @include bp(md) {
-    display: grid;
-    grid-template-columns: 2fr 2fr;
+    display: flex;
     grid-template-rows: auto;
     width: 40%;
   }
@@ -21,7 +20,7 @@
   margin: 0.5em 1em 0.5em 0;
   @include bp(md) {
     padding: 0.5em 1em;
-    margin-left: 1em;
+    margin-left: auto;
     margin-bottom: 0.5em;
     box-shadow: 2px 2px 5px $color-alpha-black;
   }
