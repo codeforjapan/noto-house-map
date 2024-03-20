@@ -140,7 +140,7 @@ div
                 .col-1
                   span.item-number {{findNumbersOfMarker(inBoundsMarkers, marker)}}
                 .col-3
-                  nuxt-link(:to="localePath(`/detail/${marker.feature.properties['管理番号']}`)")
+                  nuxt-link(:to="localePath(`/detail/${marker.room['管理番号']}`)")
                     span.item-name {{getMarkerNameText(marker.feature.properties, $i18n.locale)}}
                 .col-2
                   span.item-price {{marker.room['間取り']}}

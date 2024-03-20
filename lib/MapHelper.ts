@@ -306,6 +306,7 @@ export function groupByCoordinates(data: any): any {
   data.forEach((item) => {
     const coordinates = item.feature.geometry.coordinates.join(','); // Use coordinates as a string key
     const roomProperties = { 
+      "管理番号": item.feature.properties["管理番号"],
       "階数": item.feature.properties["階数"],
       "部屋番号": item.feature.properties["部屋番号"],
       "家賃": item.feature.properties["家賃（円）"],
@@ -322,6 +323,7 @@ export function groupByCoordinates(data: any): any {
       newItem.feature.properties.rooms = [roomProperties];
 
       // Remove the now unnecessary "部屋番号" property
+      delete newItem.feature.properties["管理番号"];
       delete newItem.feature.properties["階数"];
       delete newItem.feature.properties["部屋番号"];
       delete newItem.feature.properties["家賃（円）"];
