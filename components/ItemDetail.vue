@@ -10,7 +10,7 @@
         h2 家賃 {{item['家賃（円）']}} 円
         .prices 共益費 {{item['共益費（円）']}} 円/ 管理費 {{item['管理費（円）']}}円
         .prices 退去修繕負担金 {{item['退去修繕 負担金（円）']}}円/
-          |	礼金 {{item['礼金（円）']}}円/ 仲介手数料 {{item['仲介手数料（円）']}}円
+          |	礼金 {{item['礼金（円）']}}円/ 三者契約時の仲介手数料（円） {{item['三者契約時の仲介手数料（円）']}}円
       .col.grid_noGutter.withBorder
         .col-2.title 所在地
         .col 〒 {{ item['郵便番号'] }}
@@ -27,8 +27,10 @@
           .col.title ペット可否
           .col {{ item['ペット 可否'] }}
         .col.grid
-          .col.title 駐車料
-          .col {{ item['駐車料（円）'] }}円
+          .col.title 駐車場有無（駐車料）
+          .col {{ item['駐車場の有無']}} 
+            span(v-if='item["駐車料（円）"]')
+              | {{ `(${item['駐車料（円）']}円)` }}
       .col.grid_noGutter.withBorder
         .col.grid
           .col-2.title 備考
@@ -40,9 +42,9 @@
         h3.title 団体名
         p {{ item['団体名'] }}
       .col
-        h3.title 取扱業者
+        h3.title 取扱い業者名
         p {{ item['取扱い業者名'] }}
-        .col
+      .col
         h3.title 問い合わせ先1
         p 
           a(:href="tel1(item)")
