@@ -198,7 +198,7 @@ export default {
       activeCategory: "",
       checkedArea: [],
       isOpenAreaSelect: false,
-      isOpenList: false,
+      isOpenList: true,
       isDisplayAllCategory: true,
       mapStyle: "https://tile.openstreetmap.jp/styles/maptiler-basic-ja/style.json",
       legendMark: require(`@/assets/images/fukidashi_obj_${locale}.svg`),
