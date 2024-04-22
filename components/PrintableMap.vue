@@ -132,9 +132,7 @@ div
                 .col-2
                   .span 家賃
                 .col-2 
-                  .span ペット
-                .col-2 
-                  .span 駐車料
+                  .span 所在地
               li.list-item.grid-noGutter(
                   :class='{oddlist: index % 2 === 0}'
                   v-for="(marker, index) in group.markers"
@@ -149,9 +147,7 @@ div
                 .col-2
                   span.item-price {{marker.room['家賃']}}
                 .col-2 
-                  span.item-pet {{marker.room['ペット 可否']}}
-                .col-2 
-                  span.item-parking {{ marker.room['駐車料'] }}
+                  span.item-pet {{marker.feature.properties['所在地']}}
           .list-section-none(
             v-if="isDisplayAllCategory && displayMarkersGroupByCategory.length === 0"
           )
@@ -250,6 +246,7 @@ export default {
         })
         return groups;        
       }, []);
+      console.log(resultGroupBy)
       return resultGroupBy;
     },
     selectArea: {

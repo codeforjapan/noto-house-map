@@ -8,8 +8,8 @@
   "sources": [
     {
       "id": "properties",
-      "url": "https://noto.kamimap.com/data/xls/noto3.xlsx",
-      "link": "/data/xls/noto3.xlsx",
+      "url": "/data/xls/noto.xlsx",
+      "link": "/data/xls/noto.xlsx",
       "type": "xlsx",
       "title": "賃貸物件",
       "categoryColumn": "住居タイプ",
@@ -23,7 +23,7 @@
   "layer_settings": {
     "共同住宅": {
       "name": "共同住宅",
-      "name_en": "Floor Plan",
+      "name_en": "Share House",
       "color": "#4f4f5a",
       "bg_color": "#B7B7BE",
       "icon_class": "fa-solid fa-warehouse",
@@ -37,9 +37,9 @@
       "icon_class": "fa-solid fa-house",
       "class": "layer_house"
     },
-    "2DK": {
-      "name": "1K",
-      "name_en": "Floor Plan",
+    "メゾネット": {
+      "name": "メゾネット",
+      "name_en": "Maisonette",
       "color": "#4f4f5a",
       "bg_color": "#B7B7BE",
       "icon_class": "fa-solid fa-map-pin",
