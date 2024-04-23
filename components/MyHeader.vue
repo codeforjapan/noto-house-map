@@ -15,7 +15,7 @@ header.header
     .sub-outer.print-exclude
       .sub-button(@click='isOpenExplain=!isOpenExplain')
         i.fas.fa-info-circle.fa-lg
-        span
+        a(:href="'/about'")
           | {{$t('common.about')}}
   .qrcode
     vue-qrcode(v-bind:value='fullURL' tag="img")

@@ -109,7 +109,7 @@ export default {
           "/en/"
         ];
       });
-      return [].concat(...mapped);
+      return ["/about"].concat(...mapped);
     },
     fallback: true,
   },
