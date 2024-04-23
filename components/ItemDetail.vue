@@ -7,10 +7,10 @@
   .grid_Gutter
     .detail(v-bind:class="ColOrNull")
       .col
-        h2 家賃 {{item['家賃（円）']}} 円
-        .prices 共益費 {{item['共益費（円）']}} 円/ 管理費 {{item['管理費（円）']}}円
-        .prices 退去修繕負担金 {{item['退去修繕 負担金（円）']}}円/
-          |	礼金 {{item['礼金（円）']}}円/ 三者契約時の仲介手数料（円） {{item['三者契約時の仲介手数料（円）']}}円
+        h2 家賃 {{item['家賃（円）'].toLocaleString()}} 円
+        .prices 共益費 {{item['共益費（円）'].toLocaleString()}} 円/ 管理費 {{item['管理費（円）'].toLocaleString()}}円
+        .prices 退去修繕負担金 {{item['退去修繕 負担金（円）'].toLocaleString()}}円/
+          |	礼金 {{item['礼金（円）'].toLocaleString()}}円/ 三者契約時の仲介手数料（円） {{item['三者契約時の仲介手数料（円）'].toLocaleString()}}円
       .col.grid_noGutter.withBorder
         .col-2.title 所在地
         .col 〒 {{ item['郵便番号'] }}
@@ -21,7 +21,7 @@
           .col {{ item['間取り'] }}
         .col.grid
           .col.title 建築年
-          .col {{ item['建築年 建築年数'] }}年
+          .col {{ item['建築年 建築年数'] }}
       .col.grid_noGutter.withBorder
         .col.grid
           .col.title ペット可否
@@ -30,7 +30,7 @@
           .col.title 駐車場有無（駐車料）
           .col {{ item['駐車場の有無']}} 
             span(v-if='item["駐車料（円）"]')
-              | {{ `(${item['駐車料（円）']}円)` }}
+              | {{ `(${item['駐車料（円）'].toLocaleString()}円)` }}
       .col.grid_noGutter.withBorder
         .col.grid
           .col-2.title 備考
@@ -39,9 +39,12 @@
         simple-map(:lat="item['緯度']" :lng="item['経度']")
     .company(v-bind:class="Col3OrNull")
       .col
+        h3.title 管理番号
+        p {{ item['管理番号'] }}
+      .col
         h3.title 団体名
         p {{ item['団体名'] }}
-      .col
+        .col
         h3.title 取扱い業者名
         p {{ item['取扱い業者名'] }}
       .col
@@ -49,11 +52,11 @@
         p 
           a(:href="tel1(item)")
             | {{ item["問い合わせ先1（半角・ハイフンあり）"] }}
-        .col(v-if='item["問い合わせ先2（半角・ハイフンあり）"]')
-          h3.title 問い合わせ先2
-          p 
-            a(:href="tel2(item)")
-              | {{ item['問い合わせ先2（半角・ハイフンあり）'] }}
+      .col(v-if='item["問い合わせ先2（半角・ハイフンあり）"]')
+        h3.title 問い合わせ先2
+        p 
+          a(:href="tel2(item)")
+            | {{ item['問い合わせ先2（半角・ハイフンあり）'] }}
       .col
         p 最終更新日時 {{ item['更新日時（yyyymmdd）'] }}
 

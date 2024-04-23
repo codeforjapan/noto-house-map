@@ -145,7 +145,7 @@ div
                 .col-2
                   span.item-price {{marker.room['間取り']}}
                 .col-2
-                  span.item-price {{marker.room['家賃']}}
+                  span.item-price {{marker.room['家賃'].toLocaleString()}}円
                 .col-2 
                   span.item-pet {{marker.feature.properties['所在地']}}
           .list-section-none(
