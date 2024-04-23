@@ -3,10 +3,11 @@ div.layout-map
   div.layout-map-inner      
     main.main.col-12_md-9_xl-6
       .main-sheet
+        my-header(:mapConfig='mapConfig', ref="myHeader", showToTop=true)
         h1 このサイトについて
         p
         | このサイトは、能登半島地震で被災された方が受けられる住まいの支援のうち、みなし仮設（賃貸型応急）住宅の対象物件を、地図上で検索する機能を備えています。
-        | 一般社団法人コード・フォー・ジャパン（以下Code for Japan） が、石川県との連携協定の一貫で提供しています。
+        | 一般社団法人コード・フォー・ジャパン（以下Code for Japan） が、石川県との連携協定の一環で提供しています。
         p
         | 物件情報は、石川県より直接提供されたものを表示しています。
         p
@@ -19,3 +20,16 @@ div.layout-map
           .footer-logo
             img(src="~/assets/images/logo.png" width="895" height="160" :alt='$t("common.title")')
 </template>
+<script lang="js">
+import MyHeader from '~/components/MyHeader'
+export default {
+  components: {
+    MyHeader
+  },
+  data () {
+    return {
+      mapConfig: require('~/assets/config/2024-noto-houses')
+    }
+  },
+}
+</script>
