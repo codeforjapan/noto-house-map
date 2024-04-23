@@ -8,7 +8,7 @@
   "sources": [
     {
       "id": "properties",
-      "url": "/data/xls/noto.xlsx",
+      "url": "https://noto.kamimap.com/data/xls/noto.xlsx",
       "link": "/data/xls/noto.xlsx",
       "type": "xlsx",
       "title": "賃貸物件",
