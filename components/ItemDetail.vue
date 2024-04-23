@@ -14,7 +14,7 @@
       .col.grid_noGutter.withBorder
         .col-2.title 所在地
         .col 〒 {{ item['郵便番号'] }}
-          | {{ item['所在地'] }}
+          | {{' '}}{{ item['所在地'] }}
       .col.grid_noGutter.withBorder
         .col.grid
           .col.title 間取り

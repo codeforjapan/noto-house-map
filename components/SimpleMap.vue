@@ -14,6 +14,7 @@ div
         )
     .legend-navi
       .navigation
+        a(:href="`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`" target="_blank") Google マップ
         .navigation-area.print-exclude
           .legend-navi-icon.active
             .legend-navi-button.print-button(@click="clickPrintButton()")
