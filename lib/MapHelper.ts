@@ -210,6 +210,7 @@ export default class MapHelper implements IPrintableMap {
     if (layer_settings === undefined) {
       return category;
     }
+    // eslint-disable-next-line no-undef
     layer_settings.forEach((setting: MapPrint.LayerSetting) => {
       // if the category name is found, update with layer setting
       if (setting.name === category.name) {
